@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fff7fb" />
+  <title>A Little Celebration of Julia ✨</title>
+  <style>
+    :root{
+      --ink:#2f2933;
+      --muted:#6e6672;
+      --pink:#d96d9b;
+      --pink-dark:#b84f7d;
+      --blue:#7ca9d7;
+      --gold:#f0b55d;
+      --green:#7faa89;
+      --paper:#fffdfc;
+      --shadow:0 24px 70px rgba(67,45,77,.16);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+    body{min-height:100vh;overflow-x:hidden;background:linear-gradient(145deg,#fff7fb,#edf6ff)}
+    button{font:inherit}
+
+    .app{min-height:100vh;padding:18px;position:relative}
+    .orb{position:fixed;border-radius:50%;filter:blur(2px);opacity:.35;pointer-events:none;z-index:-1}
+    .o1{width:230px;height:230px;background:#ffd8e8;left:-80px;top:-70px}
+    .o2{width:280px;height:280px;background:#d9ebff;right:-90px;bottom:-90px}
+
+    .shell{width:min(850px,96vw);margin:0 auto}
+    .topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 8px 16px;color:var(--muted);font-size:14px;font-weight:700;gap:14px}
+    .brand{letter-spacing:.08em;text-transform:uppercase}
+    .dots{display:flex;gap:7px;flex-shrink:0}
+    .dot{width:8px;height:8px;border-radius:50%;background:#d9d3db;transition:.25s}
+    .dot.active{width:24px;border-radius:10px;background:var(--pink)}
+
+    .stage{position:relative;background:rgba(255,255,255,.80);backdrop-filter:blur(13px);border:1px solid rgba(255,255,255,.9);border-radius:34px;box-shadow:var(--shadow);overflow:hidden}
+    .scene{display:none;min-height:555px;padding:42px;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center}
+    .scene.active{display:grid;animation:sceneIn .45s ease both}
+    @keyframes sceneIn{from{opacity:0;transform:translateY(12px) scale(.992)}to{opacity:1;transform:none}}
+
+    .copy{z-index:3;min-width:0}
+    .kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:var(--pink);margin-bottom:10px}
+    .copy h1,.copy h2{margin:0 0 15px;line-height:1.03;overflow-wrap:anywhere}
+    .copy h1{font-size:clamp(38px,6vw,68px)}
+    .copy h2{font-size:clamp(34px,5vw,56px)}
+    .copy p{font-size:clamp(17px,2.2vw,20px);line-height:1.6;color:#554d59;margin:0 0 24px;max-width:560px}
+    .small{font-size:15px!important;color:var(--muted)!important}
+    .cta{border:0;border-radius:999px;padding:14px 22px;background:linear-gradient(135deg,var(--pink),#e797b9);color:white;font-weight:900;cursor:pointer;box-shadow:0 12px 28px rgba(217,109,155,.27);transition:.2s}
+    .cta:hover{transform:translateY(-2px)}
+    .cta:focus-visible,.restart:focus-visible{outline:3px solid rgba(124,169,215,.45);outline-offset:3px}
+    .hint{margin-top:13px;font-size:13px;color:#8b838f}
+
+    .visual{position:relative;min-height:390px;display:grid;place-items:center;isolation:isolate}
+    .badge{position:absolute;background:white;border-radius:18px;padding:10px 13px;box-shadow:0 12px 35px rgba(54,43,60,.12);font-weight:800;font-size:14px;animation:float 3.6s ease-in-out infinite;z-index:8}
+    .b-a{top:22px;right:12px}
+    .b-b{bottom:28px;left:6px;animation-delay:-1.2s}
+    @keyframes float{50%{transform:translateY(-7px) rotate(1deg)}}
+
+    /* Julia: polished, sporty, stylized illustration */
+    .julia-wrap{width:228px;max-width:58vw;position:relative;z-index:6;filter:drop-shadow(0 20px 26px rgba(50,39,55,.16));animation:bob 4s ease-in-out infinite;cursor:pointer}
+    .julia-wrap svg{display:block;width:100%;height:auto;overflow:visible}
+    .julia-wrap.mini{width:138px;position:absolute;right:8px;bottom:2px;transform-origin:bottom right}
+    .julia-wrap.hiker{width:154px;position:absolute;left:52px;bottom:0;transform-origin:bottom left}
+    @keyframes bob{50%{transform:translateY(-5px)}}
+
+    .jf-hair-back{fill:#3a2725}
+    .jf-hair-mid{fill:#4a302c}
+    .jf-hair-shine{fill:#6b463e;opacity:.52}
+    .jf-skin{fill:#f2c4a4}
+    .jf-skin-shadow{fill:#e5ae8c}
+    .jf-top{fill:#d96d9b}
+    .jf-top-dark{fill:#b84f7d}
+    .jf-leg{fill:#29364d}
+    .jf-shoe{fill:#ffffff;stroke:#d8dde5;stroke-width:2}
+    .jf-eye{fill:#3a2b2d}
+    .jf-brow{stroke:#4b3431;stroke-width:4;stroke-linecap:round;fill:none}
+    .jf-lash{stroke:#3a2b2d;stroke-width:2.4;stroke-linecap:round}
+    .jf-mouth{stroke:#a45161;stroke-width:3.6;stroke-linecap:round;fill:none}
+    .jf-nose{stroke:#d08e73;stroke-width:2;stroke-linecap:round;fill:none}
+    .jf-blush{fill:#e99a9a;opacity:.34}
+    .jf-earring{fill:#f0b55d}
+
+    /* Japan */
+    .sun{position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,#ffd7df 0 38%,#ffecef 39% 100%);opacity:.9;z-index:0}
+    .torii{position:absolute;width:220px;height:190px;bottom:54px;z-index:1}
+    .torii:before,.torii:after{content:"";position:absolute;background:#d9554f}
+    .torii:before{width:18px;height:145px;left:55px;top:42px;box-shadow:92px 0 #d9554f}
+    .torii:after{width:210px;height:18px;left:5px;top:30px;border-radius:6px;box-shadow:15px 26px 0 -3px #d9554f}
+    .sakura{position:absolute;font-size:31px;animation:petal 5s linear infinite;z-index:4}
+    .s1{top:42px;left:40px}.s2{top:86px;right:28px;animation-delay:-2s}.s3{bottom:68px;right:58px;animation-delay:-3.2s}
+    @keyframes petal{50%{transform:translate(12px,18px) rotate(40deg)}}
+
+    /* Sailing */
+    .sea{position:absolute;inset:auto -60px -75px -60px;height:220px;background:linear-gradient(#b9def4,#78b6d9);border-radius:50% 50% 0 0;z-index:0}
+    .sea:after{content:"";position:absolute;inset:35px 0 auto;height:75px;background:repeating-radial-gradient(ellipse at center,rgba(255,255,255,.65) 0 3px,transparent 4px 32px);opacity:.45}
+    .boat{position:relative;width:240px;height:240px;z-index:2}
+    .mast{position:absolute;width:6px;height:178px;background:#7e614c;left:116px;top:20px}
+    .sail1{position:absolute;width:0;height:0;border-top:0 solid transparent;border-bottom:122px solid transparent;border-left:96px solid #fff;left:122px;top:34px;filter:drop-shadow(0 7px 6px rgba(0,0,0,.07))}
+    .sail2{position:absolute;width:0;height:0;border-top:0 solid transparent;border-bottom:95px solid transparent;border-right:72px solid #f5b6cf;left:38px;top:59px}
+    .hull{position:absolute;width:185px;height:40px;background:#855e4c;border-radius:0 0 90px 90px;left:25px;top:166px;transform:skewX(-9deg)}
+    .wave{position:absolute;font-size:28px;bottom:62px;animation:wave 2.5s ease-in-out infinite;z-index:4}
+    .w1{left:30px}.w2{right:18px;animation-delay:-1.1s}
+    @keyframes wave{50%{transform:translateY(7px)}}
+
+    /* Hiking */
+    .mountains{position:absolute;inset:0;z-index:0}
+    .m{position:absolute;bottom:54px;width:0;height:0;border-left:125px solid transparent;border-right:125px solid transparent;border-bottom:185px solid #90b18f}
+    .m1{left:10px}.m2{right:-2px;border-left-width:145px;border-right-width:145px;border-bottom-width:220px;border-bottom-color:#759c83}
+    .snow{position:absolute;width:0;height:0;border-left:38px solid transparent;border-right:38px solid transparent;border-bottom:55px solid #f9fbff;transform:rotate(180deg);top:91px}
+    .sn1{left:97px}.sn2{right:103px;top:58px}
+    .trail-line{position:absolute;bottom:0;left:50%;width:190px;height:180px;border-left:18px solid #d6b079;border-radius:50%;transform:rotate(20deg)}
+    .pack-badge{position:absolute;left:20px;bottom:58px;background:#6e8d9c;color:white;padding:8px 10px;border-radius:14px;font-size:12px;font-weight:900;z-index:7;transform:rotate(-5deg)}
+
+    /* Final */
+    .final{grid-template-columns:1fr;text-align:center;min-height:555px}
+    .final .copy{max-width:700px;margin:auto}
+    .final-card{margin:8px auto 0;background:var(--paper);border-radius:26px;padding:30px;box-shadow:0 20px 55px rgba(68,45,73,.13);border:1px solid #f3eaf0;position:relative}
+    .final-card:before{content:"✈️  🗻  ⛵  🌸";display:block;font-size:28px;margin-bottom:14px}
+    .final-card p{margin-bottom:10px}
+    .sign{font-weight:900;color:var(--pink);margin-top:15px}
+    .adventure{font-weight:900;color:#596575;margin-top:14px}
+    .restart{margin-top:18px;background:none;border:0;color:#827984;text-decoration:underline;cursor:pointer;padding:10px}
+
+    .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+    .piece{position:absolute;width:10px;height:14px;border-radius:3px;animation:fall 2.8s ease-in forwards}
+    @keyframes fall{to{transform:translate(var(--x),110vh) rotate(720deg)}}
+    .spark{position:fixed;pointer-events:none;font-size:22px;animation:spark .85s ease-out forwards;z-index:60}
+    @keyframes spark{to{transform:translate(var(--x),var(--y)) scale(.4) rotate(80deg);opacity:0}}
+
+    @media(max-width:720px){
+      .app{padding:10px 10px 24px}
+      .shell{width:100%}
+      .topbar{padding:6px 4px 10px;font-size:12px;align-items:flex-start}
+      .brand{max-width:65%;line-height:1.35}
+      .stage{border-radius:26px;overflow:hidden}
+      .scene{min-height:0;grid-template-columns:1fr;padding:24px 18px 28px;align-items:start;text-align:center;gap:10px}
+      .scene.active{display:grid}
+      .visual{min-height:260px;order:-1;margin-bottom:4px}
+      .copy h1{font-size:clamp(34px,10vw,50px)}
+      .copy h2{font-size:clamp(31px,9vw,46px)}
+      .copy p{font-size:17px;line-height:1.55;margin-left:auto;margin-right:auto}
+      .julia-wrap{width:min(190px,54vw)}
+      .julia-wrap.mini{width:116px;right:4px;bottom:0}
+      .julia-wrap.hiker{width:128px;left:30px}
+      .badge{font-size:12px;padding:8px 10px}
+      .b-a{right:2px;top:10px}.b-b{left:2px;bottom:12px}
+      .sun{width:190px;height:190px}.torii{transform:scale(.86);bottom:32px}
+      .boat{transform:scale(.88)}
+      .m{transform:scale(.9);transform-origin:bottom}
+      .final{padding-top:28px;padding-bottom:32px}
+      .final .visual{display:none}
+      .final-card{padding:22px 18px;border-radius:22px}
+      .final-card p{font-size:16px;line-height:1.55}
+      .cta{width:min(100%,320px)}
+    }
+
+    @media(max-width:430px){
+      .app{padding-left:8px;padding-right:8px}
+      .scene{padding-left:15px;padding-right:15px}
+      .visual{min-height:238px}
+      .julia-wrap{width:168px}
+      .julia-wrap.mini{width:104px}
+      .julia-wrap.hiker{width:116px;left:22px}
+      .badge{max-width:138px;line-height:1.2}
+      .final-card:before{font-size:23px}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="orb o1"></div><div class="orb o2"></div>
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">A Little Celebration of Julia</div>
+        <div class="dots" id="dots" aria-label="Birthday card progress"></div>
+      </div>
+      <main class="stage" id="stage" aria-live="polite">
+
+        <section class="scene active" data-step="0">
+          <div class="copy">
+            <div class="kicker">A tiny birthday surprise</div>
+            <h1>Julia, this one is for you 💌</h1>
+            <p>We wanted to make something that feels a little more like you — warm, fun, thoughtful, dependable, and always full of good energy.</p>
+            <button class="cta next">Start ✨</button>
+            <div class="hint">A few little reminders of why we’re so happy to have you around.</div>
+          </div>
+          <div class="visual">
+            <div class="badge b-a">kind & caring 💛</div>
+            <div class="badge b-b">someone to rely on ✨</div>
+            <div class="julia-wrap" data-julia aria-label="Stylized cartoon illustration of Julia"></div>
+          </div>
+        </section>
+
+        <section class="scene" data-step="1">
+          <div class="copy">
+            <div class="kicker">Stop 1 · Team Julia</div>
+            <h2>The colleague everyone is happy to have around 💛</h2>
+            <p>You’re thoughtful, caring, and always someone people can count on. Working with you feels easy because you bring both professionalism and genuine warmth to the team.</p>
+            <button class="cta next">Next →</button>
+          </div>
+          <div class="visual">
+            <div class="sun"></div><div class="torii"></div>
+            <div class="sakura s1">🌸</div><div class="sakura s2">🌸</div><div class="sakura s3">🌸</div>
+            <div class="julia-wrap mini" data-julia aria-label="Stylized cartoon Julia in a Japan-themed scene"></div>
+          </div>
+        </section>
+
+        <section class="scene" data-step="2">
+          <div class="copy">
+            <div class="kicker">Stop 2 · Beyond work</div>
+            <h2>And somehow, there’s always a good story to tell ✨</h2>
+            <p>Whether it’s Japan, sailing, a new trip, or just something funny from everyday life, you always bring curiosity, personality, and something interesting to the conversation.</p>
+            <button class="cta next">Keep going 🌊</button>
+          </div>
+          <div class="visual">
+            <div class="sea"></div><div class="wave w1">〰️</div><div class="wave w2">〰️</div>
+            <div class="boat"><div class="mast"></div><div class="sail1"></div><div class="sail2"></div><div class="hull"></div></div>
+            <div class="badge b-a">curious spirit ✨</div>
+          </div>
+        </section>
+
+        <section class="scene" data-step="3">
+          <div class="copy">
+            <div class="kicker">Stop 3 · Your energy</div>
+            <h2>You bring a little adventure everywhere you go 🥾</h2>
+            <p>At work, in the mountains, on a boat, or somewhere across the world — you bring the same energy: capable, open-minded, fun, and fully present.</p>
+            <button class="cta next">One last click ✨</button>
+          </div>
+          <div class="visual">
+            <div class="mountains"><div class="m m1"></div><div class="m m2"></div><div class="snow sn1"></div><div class="snow sn2"></div><div class="trail-line"></div></div>
+            <div class="julia-wrap hiker" data-julia aria-label="Stylized cartoon Julia in a hiking scene"></div>
+            <div class="pack-badge">trail mode 🥾</div>
+          </div>
+        </section>
+
+        <section class="scene final" data-step="4">
+          <div class="copy">
+            <div class="kicker">Final stop · Birthday mode</div>
+            <div class="final-card">
+              <h2>Happy Birthday, Julia! 🎉</h2>
+              <p>We’re so happy to have you in our team. You’re a wonderful colleague — kind, caring, reliable, and always a pleasure to work with. You bring warmth, positivity, and the kind of energy that makes people feel supported.</p>
+              <p>And outside of work, we love how much curiosity and adventure you bring with you — from travels and sailing to hikes, stories, and all the little moments in between.</p>
+              <p>We wish you a wonderful year ahead, full of happiness, exciting experiences, great people, meaningful moments, and lots of reasons to smile.</p>
+              <div class="sign">Happy Birthday from all of us! 💛</div>
+              <div class="adventure">May the year ahead be full of great work, great people, and even better adventures. ✈️</div>
+            </div>
+            <button class="restart" id="restart">Replay the adventure</button>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div class="confetti" id="confetti"></div>
+  </div>
+
+<script>
+  const juliaSVG = `
+  <svg viewBox="0 0 260 420" role="img" aria-hidden="true" focusable="false">
+    <!-- long brunette hair behind the body -->
+    <path class="jf-hair-back" d="M57 86c-13 34-11 101-4 155 5 39 0 81-18 114 23 16 50 17 74 4 13-7 27-7 41 0 25 13 53 11 76-5-20-34-24-74-17-115 9-53 7-120-6-154-19-49-56-70-74-70-17 0-54 20-72 71z"/>
+    <path class="jf-hair-mid" d="M67 81c14-37 43-54 63-54 27 0 59 22 70 61-13-10-28-15-44-17-34-5-61 5-89 10z"/>
+    <path class="jf-hair-shine" d="M75 90c6-25 22-43 43-52-11 25-16 53-14 82 2 30-2 66-14 91-11-37-13-85-15-121zm106-8c16 41 16 85 5 124-4-35-4-69-1-101 1-8-1-15-4-23z"/>
+
+    <!-- legs and shoes -->
+    <path class="jf-leg" d="M101 300h28l-5 80H96z"/>
+    <path class="jf-leg" d="M137 300h28l7 80h-28z"/>
+    <path class="jf-shoe" d="M90 375h38c6 0 10 4 10 10v10H82v-7c0-7 3-11 8-13z"/>
+    <path class="jf-shoe" d="M143 376h34c7 1 11 5 13 12v7h-57v-10c0-5 4-9 10-9z"/>
+
+    <!-- slim sporty body -->
+    <path class="jf-top" d="M94 201c9-9 22-14 36-14 15 0 29 5 38 15l18 33-18 67c-12 9-64 9-76 0l-17-67z"/>
+    <path class="jf-top-dark" d="M101 286c18 7 41 7 58 0l8 29c-18 10-56 10-74 0z"/>
+    <path class="jf-skin" d="M93 208c-12 11-19 28-23 48l14 5c6-18 13-31 23-40z"/>
+    <path class="jf-skin" d="M168 209c12 11 19 27 24 48l-14 5c-6-18-13-31-24-40z"/>
+    <circle class="jf-skin-shadow" cx="79" cy="263" r="9"/>
+    <circle class="jf-skin-shadow" cx="183" cy="263" r="9"/>
+
+    <!-- neck -->
+    <path class="jf-skin" d="M115 167h31l2 30c-8 10-27 10-35 0z"/>
+
+    <!-- face -->
+    <ellipse class="jf-skin" cx="130" cy="112" rx="51" ry="64"/>
+    <ellipse class="jf-blush" cx="97" cy="134" rx="13" ry="7"/>
+    <ellipse class="jf-blush" cx="162" cy="134" rx="13" ry="7"/>
+
+    <!-- hair framing the face -->
+    <path class="jf-hair-mid" d="M78 103c3-35 23-61 52-61 31 0 52 25 54 64-13-11-20-26-23-43-19 20-46 27-80 23 0 7-1 12-3 17z"/>
+    <path class="jf-hair-back" d="M78 95c-8 25-7 54 4 78 5 11 5 25 1 42-16-23-22-52-18-84 2-18 6-31 13-36zm106 2c8 26 7 56-5 79-5 11-5 25-1 42 17-22 23-52 19-84-2-17-6-31-13-37z"/>
+
+    <!-- eyebrows -->
+    <path class="jf-brow" d="M94 103c8-6 16-6 23-2"/>
+    <path class="jf-brow" d="M143 101c7-4 15-4 22 2"/>
+
+    <!-- eyes + lashes -->
+    <ellipse class="jf-eye" cx="106" cy="114" rx="5.7" ry="6.4"/>
+    <ellipse class="jf-eye" cx="154" cy="114" rx="5.7" ry="6.4"/>
+    <path class="jf-lash" d="M98 113l-6-2M162 113l6-2"/>
+    <circle fill="#fff" cx="108" cy="112" r="1.5"/>
+    <circle fill="#fff" cx="156" cy="112" r="1.5"/>
+
+    <!-- nose + smile -->
+    <path class="jf-nose" d="M131 118c-2 7-2 13 2 16"/>
+    <path class="jf-mouth" d="M117 147c8 8 18 8 26 0"/>
+    <path fill="#d37b88" opacity=".55" d="M119 148c7 5 15 5 22 0-5 8-17 9-22 0z"/>
+
+    <!-- earrings -->
+    <circle class="jf-earring" cx="79" cy="125" r="3.3"/>
+    <circle class="jf-earring" cx="181" cy="125" r="3.3"/>
+
+    <!-- sporty neckline -->
+    <path fill="#fff" opacity=".92" d="M112 194c8 8 28 8 36 0l7 9c-15 13-36 13-50 0z"/>
+  </svg>`;
+
+  document.querySelectorAll('[data-julia]').forEach(el => el.innerHTML = juliaSVG);
+
+  const scenes=[...document.querySelectorAll('.scene')];
+  const dots=document.getElementById('dots');
+  const stage=document.getElementById('stage');
+  const confetti=document.getElementById('confetti');
+  const colors=['#d96d9b','#7ca9d7','#f0b55d','#7faa89','#b89bd8'];
+  let step=0;
+
+  scenes.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===0?' active':'');
+    d.setAttribute('aria-hidden','true');
+    dots.appendChild(d);
+  });
+  const dotEls=[...dots.children];
+
+  function show(n){
+    if(n===step && scenes[n].classList.contains('active')) return;
+    scenes[step].classList.remove('active');
+    step=n;
+    scenes[step].classList.add('active');
+    dotEls.forEach((d,i)=>d.classList.toggle('active',i===step));
+
+    requestAnimationFrame(()=>{
+      const top=stage.getBoundingClientRect().top + window.scrollY - 16;
+      window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+    });
+
+    if(step===4) burst(100);
+  }
+
+  document.querySelectorAll('.next').forEach(btn=>btn.addEventListener('click',()=>show(Math.min(step+1,scenes.length-1))));
+  document.getElementById('restart').addEventListener('click',()=>show(0));
+
+  function burst(count=65){
+    confetti.innerHTML='';
+    for(let i=0;i<count;i++){
+      const p=document.createElement('span');
+      p.className='piece';
+      p.style.left=Math.random()*100+'vw';
+      p.style.top=(-30-Math.random()*120)+'px';
+      p.style.background=colors[Math.floor(Math.random()*colors.length)];
+      p.style.setProperty('--x',((Math.random()-.5)*260)+'px');
+      p.style.animationDelay=Math.random()*.45+'s';
+      p.style.animationDuration=(2.1+Math.random()*1.4)+'s';
+      confetti.appendChild(p);
+    }
+    setTimeout(()=>confetti.innerHTML='',4200);
+  }
+
+  document.addEventListener('click',e=>{
+    const target=e.target.closest('.julia-wrap');
+    if(!target) return;
+    const rect=target.getBoundingClientRect();
+    const cx=rect.left+rect.width/2;
+    const cy=rect.top+rect.height/2;
+    for(let i=0;i<8;i++){
+      const s=document.createElement('span');
+      s.className='spark';
+      s.textContent=['✨','💛','🌸'][Math.floor(Math.random()*3)];
+      s.style.left=cx+'px';
+      s.style.top=cy+'px';
+      s.style.setProperty('--x',((Math.random()-.5)*150)+'px');
+      s.style.setProperty('--y',((Math.random()-.5)*150)+'px');
+      document.body.appendChild(s);
+      setTimeout(()=>s.remove(),900);
+    }
+  });
+</script>
+</body>
+</html>

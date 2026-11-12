@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fff7fb" />
+  <title>A Little Celebration of Julia ✨</title>
+  <style>
+    :root{--ink:#2f2933;--muted:#6e6672;--pink:#d96d9b;--blue:#7ca9d7;--gold:#f0b55d;--green:#7faa89;--paper:#fffdfc;--shadow:0 24px 70px rgba(67,45,77,.16)}
+    *{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+    body{min-height:100vh;overflow-x:hidden;background:linear-gradient(145deg,#fff7fb,#edf6ff)}
+    button{font:inherit}
+    .app{min-height:100vh;display:grid;place-items:center;padding:18px;position:relative;overflow:hidden}
+    .orb{position:fixed;border-radius:50%;filter:blur(2px);opacity:.35;pointer-events:none}.o1{width:230px;height:230px;background:#ffd8e8;left:-80px;top:-70px}.o2{width:280px;height:280px;background:#d9ebff;right:-90px;bottom:-90px}
+    .shell{width:min(850px,96vw);min-height:610px;position:relative}
+    .topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 8px 16px;color:var(--muted);font-size:14px;font-weight:700}.brand{letter-spacing:.08em;text-transform:uppercase}.dots{display:flex;gap:7px}.dot{width:8px;height:8px;border-radius:50%;background:#d9d3db;transition:.25s}.dot.active{width:24px;border-radius:10px;background:var(--pink)}
+    .stage{position:relative;min-height:555px;background:rgba(255,255,255,.78);backdrop-filter:blur(13px);border:1px solid rgba(255,255,255,.9);border-radius:34px;box-shadow:var(--shadow);overflow:hidden}
+    .scene{position:absolute;inset:0;padding:42px;display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center;opacity:0;pointer-events:none;transform:translateX(28px) scale(.985);transition:opacity .45s ease,transform .45s ease}.scene.active{opacity:1;pointer-events:auto;transform:none}.scene.exit-left{opacity:0;transform:translateX(-28px) scale(.985)}
+    .copy{z-index:3}.kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:var(--pink);margin-bottom:10px}.copy h1,.copy h2{margin:0 0 15px;line-height:1.03}.copy h1{font-size:clamp(38px,6vw,68px)}.copy h2{font-size:clamp(34px,5vw,56px)}.copy p{font-size:clamp(17px,2.2vw,20px);line-height:1.6;color:#554d59;margin:0 0 24px;max-width:540px}.small{font-size:15px!important;color:var(--muted)!important}
+    .cta{border:0;border-radius:999px;padding:14px 22px;background:linear-gradient(135deg,var(--pink),#e797b9);color:white;font-weight:900;cursor:pointer;box-shadow:0 12px 28px rgba(217,109,155,.27);transition:.2s}.cta:hover{transform:translateY(-2px)}.ghost{background:#fff;color:var(--ink);border:1px solid #eee5ed;box-shadow:none;margin-left:8px}.hint{margin-top:13px;font-size:13px;color:#8b838f}
+    .visual{position:relative;min-height:390px;display:grid;place-items:center}.badge{position:absolute;background:white;border-radius:18px;padding:10px 13px;box-shadow:0 12px 35px rgba(54,43,60,.12);font-weight:800;font-size:14px;animation:float 3.6s ease-in-out infinite}.b-a{top:22px;right:12px}.b-b{bottom:28px;left:6px;animation-delay:-1.2s}@keyframes float{50%{transform:translateY(-7px) rotate(1deg)}}
+
+    /* Generic illustrated Julia */
+    .julia{width:210px;height:330px;position:relative;filter:drop-shadow(0 18px 24px rgba(50,39,55,.13));animation:bob 4s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-5px)}}
+    .hair-back{position:absolute;width:158px;height:228px;background:#3b2926;border-radius:82px 82px 58px 58px;left:26px;top:18px}.face{position:absolute;width:112px;height:138px;border-radius:58% 58% 54% 54%;background:#f1c6a8;left:49px;top:46px;z-index:2}.hair-top{position:absolute;width:128px;height:84px;background:#3b2926;border-radius:68px 68px 27px 34px;left:39px;top:22px;z-index:3;transform:rotate(-4deg)}.part{position:absolute;width:50px;height:78px;background:#f1c6a8;border-radius:60% 20% 50% 50%;left:78px;top:53px;z-index:4;transform:rotate(7deg)}
+    .eye{position:absolute;width:7px;height:7px;border-radius:50%;background:#3d3132;top:88px;z-index:5}.e1{left:77px}.e2{left:124px}.smile{position:absolute;width:25px;height:12px;border-bottom:3px solid #a75d62;border-radius:0 0 22px 22px;left:93px;top:122px;z-index:5}.body{position:absolute;width:106px;height:140px;border-radius:44px 44px 28px 28px;background:#d96d9b;left:52px;top:184px;z-index:1;clip-path:polygon(16% 0,84% 0,100% 36%,84% 100%,16% 100%,0 36%)}.body:before,.body:after{content:"";position:absolute;top:22px;width:22px;height:92px;background:#d96d9b;border-radius:18px}.body:before{left:-18px;transform:rotate(7deg)}.body:after{right:-18px;transform:rotate(-7deg)}.neck{position:absolute;width:38px;height:33px;background:#f1c6a8;left:86px;top:166px;z-index:1}.scarf{position:absolute;width:68px;height:18px;background:#f0b55d;border-radius:20px;left:71px;top:190px;z-index:4;transform:rotate(-4deg)}
+
+    /* Japan */
+    .sun{position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,#ffd7df 0 38%,#ffecef 39% 100%);opacity:.9}.torii{position:absolute;width:220px;height:190px;bottom:54px}.torii:before,.torii:after{content:"";position:absolute;background:#d9554f}.torii:before{width:18px;height:145px;left:55px;top:42px;box-shadow:92px 0 #d9554f}.torii:after{width:210px;height:18px;left:5px;top:30px;border-radius:6px;box-shadow:15px 26px 0 -3px #d9554f}.sakura{position:absolute;font-size:31px;animation:petal 5s linear infinite}.s1{top:42px;left:40px}.s2{top:86px;right:28px;animation-delay:-2s}.s3{bottom:68px;right:58px;animation-delay:-3.2s}@keyframes petal{50%{transform:translate(12px,18px) rotate(40deg)}}
+    .mini-julia{transform:scale(.58);position:absolute;bottom:-25px;right:6px;transform-origin:bottom right}
+
+    /* Sailing */
+    .sea{position:absolute;inset:auto -60px -75px -60px;height:220px;background:linear-gradient(#b9def4,#78b6d9);border-radius:50% 50% 0 0}.sea:after{content:"";position:absolute;inset:35px 0 auto;height:75px;background:repeating-radial-gradient(ellipse at center,rgba(255,255,255,.65) 0 3px,transparent 4px 32px);opacity:.45}.boat{position:relative;width:240px;height:240px;z-index:2}.mast{position:absolute;width:6px;height:178px;background:#7e614c;left:116px;top:20px}.sail1{position:absolute;width:0;height:0;border-top:0 solid transparent;border-bottom:122px solid transparent;border-left:96px solid #fff;left:122px;top:34px;filter:drop-shadow(0 7px 6px rgba(0,0,0,.07))}.sail2{position:absolute;width:0;height:0;border-top:0 solid transparent;border-bottom:95px solid transparent;border-right:72px solid #f5b6cf;left:38px;top:59px}.hull{position:absolute;width:185px;height:40px;background:#855e4c;border-radius:0 0 90px 90px;left:25px;top:166px;transform:skewX(-9deg)}
+    .wave{position:absolute;font-size:28px;bottom:62px;animation:wave 2.5s ease-in-out infinite}.w1{left:30px}.w2{right:18px;animation-delay:-1.1s}@keyframes wave{50%{transform:translateY(7px)}}
+
+    /* Hiking */
+    .mountains{position:absolute;inset:0}.m{position:absolute;bottom:54px;width:0;height:0;border-left:125px solid transparent;border-right:125px solid transparent;border-bottom:185px solid #90b18f}.m1{left:10px}.m2{right:-2px;border-left-width:145px;border-right-width:145px;border-bottom-width:220px;border-bottom-color:#759c83}.snow{position:absolute;width:0;height:0;border-left:38px solid transparent;border-right:38px solid transparent;border-bottom:55px solid #f9fbff;transform:rotate(180deg);top:91px}.sn1{left:97px}.sn2{right:103px;top:58px}.trail-line{position:absolute;bottom:0;left:50%;width:190px;height:180px;border-left:18px solid #d6b079;border-radius:50%;transform:rotate(20deg)}.hike-julia{transform:scale(.64);position:absolute;bottom:-16px;left:72px;transform-origin:bottom left}.backpack{position:absolute;width:39px;height:70px;background:#6e8d9c;border-radius:18px;left:39px;top:212px;z-index:0}
+
+    /* Final */
+    .final{grid-template-columns:1fr;text-align:center}.final .copy{max-width:680px;margin:auto}.final-card{margin:8px auto 0;background:var(--paper);border-radius:26px;padding:30px;box-shadow:0 20px 55px rgba(68,45,73,.13);border:1px solid #f3eaf0;position:relative}.final-card:before{content:"✈️  🗻  ⛵  🌸";display:block;font-size:28px;margin-bottom:14px}.final-card p{margin-bottom:10px}.sign{font-weight:900;color:var(--pink);margin-top:15px}.adventure{font-weight:900;color:#596575;margin-top:14px}.restart{margin-top:18px;background:none;border:0;color:#827984;text-decoration:underline;cursor:pointer}
+    .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}.piece{position:absolute;width:10px;height:14px;border-radius:3px;animation:fall 2.8s ease-in forwards}@keyframes fall{to{transform:translate(var(--x),110vh) rotate(720deg)}}
+    .spark{position:fixed;pointer-events:none;font-size:22px;animation:spark .85s ease-out forwards;z-index:60}@keyframes spark{to{transform:translate(var(--x),var(--y)) scale(.4) rotate(80deg);opacity:0}}
+
+    @media(max-width:720px){.app{padding:10px}.shell{min-height:735px}.stage{min-height:675px;border-radius:26px}.scene{grid-template-columns:1fr;padding:28px 22px;align-content:center;text-align:center;gap:8px}.copy p{margin-left:auto;margin-right:auto}.visual{min-height:300px;order:-1}.julia{transform:scale(.8)}.mini-julia,.hike-julia{transform:scale(.5)}.ghost{margin-left:4px}.badge{font-size:12px}.b-a{right:2px}.b-b{left:2px}.final{padding-top:34px}.final .visual{display:none}.topbar{padding:6px 4px 10px}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="orb o1"></div><div class="orb o2"></div>
+    <div class="shell">
+      <div class="topbar"><div class="brand">A Little Celebration of Julia</div><div class="dots" id="dots"></div></div>
+      <div class="stage" id="stage">
+
+        <section class="scene active" data-step="0">
+          <div class="copy">
+            <div class="kicker">A tiny birthday surprise</div>
+            <h1>Julia, this one is for you 💌</h1>
+            <p>We wanted to make something that feels a little more like you — warm, fun, thoughtful, dependable, and always full of good energy.</p>
+            <button class="cta next">Start ✨</button>
+            <div class="hint">A few little reminders of why we’re so happy to have you around.</div>
+          </div>
+          <div class="visual">
+            <div class="badge b-a">kind & caring 💛</div><div class="badge b-b">someone to rely on ✨</div>
+            <div class="julia" title="Our very unofficial cartoon Julia">
+              <div class="hair-back"></div><div class="neck"></div><div class="body"></div><div class="face"></div><div class="hair-top"></div><div class="part"></div><div class="eye e1"></div><div class="eye e2"></div><div class="smile"></div><div class="scarf"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="scene" data-step="1">
+          <div class="copy">
+            <div class="kicker">Stop 1 · Team Julia</div>
+            <h2>The colleague everyone is happy to have around 💛</h2>
+            <p>You’re thoughtful, caring, and always someone people can count on. Working with you feels easy because you bring both professionalism and genuine warmth to the team.</p>
+            <button class="cta next">Next →</button>
+          </div>
+          <div class="visual">
+            <div class="sun"></div><div class="torii"></div><div class="sakura s1">🌸</div><div class="sakura s2">🌸</div><div class="sakura s3">🌸</div>
+            <div class="julia mini-julia"><div class="hair-back"></div><div class="neck"></div><div class="body"></div><div class="face"></div><div class="hair-top"></div><div class="part"></div><div class="eye e1"></div><div class="eye e2"></div><div class="smile"></div><div class="scarf"></div></div>
+          </div>
+        </section>
+
+        <section class="scene" data-step="2">
+          <div class="copy">
+            <div class="kicker">Stop 2 · Beyond work</div>
+            <h2>And somehow, there’s always a good story to tell ✨</h2>
+            <p>Whether it’s Japan, sailing, a new trip, or just something funny from everyday life, you always bring curiosity, personality, and something interesting to the conversation.</p>
+            <button class="cta next">Keep going 🌊</button>
+          </div>
+          <div class="visual">
+            <div class="sea"></div><div class="wave w1">〰️</div><div class="wave w2">〰️</div>
+            <div class="boat"><div class="mast"></div><div class="sail1"></div><div class="sail2"></div><div class="hull"></div></div>
+            <div class="badge b-a">curious spirit ✨</div>
+          </div>
+        </section>
+
+        <section class="scene" data-step="3">
+          <div class="copy">
+            <div class="kicker">Stop 3 · Your energy</div>
+            <h2>You bring a little adventure everywhere you go 🥾</h2>
+            <p>At work, in the mountains, on a boat, or somewhere across the world — you bring the same energy: capable, open-minded, fun, and fully present.</p>
+            <button class="cta next">One last click ✨</button>
+          </div>
+          <div class="visual">
+            <div class="mountains"><div class="m m1"></div><div class="m m2"></div><div class="snow sn1"></div><div class="snow sn2"></div><div class="trail-line"></div></div>
+            <div class="julia hike-julia"><div class="backpack"></div><div class="hair-back"></div><div class="neck"></div><div class="body"></div><div class="face"></div><div class="hair-top"></div><div class="part"></div><div class="eye e1"></div><div class="eye e2"></div><div class="smile"></div><div class="scarf"></div></div>
+          </div>
+        </section>
+
+        <section class="scene final" data-step="4">
+          <div class="copy">
+            <div class="kicker">Final stop · Birthday mode</div>
+            <div class="final-card">
+              <h2>Happy Birthday, Julia! 🎉</h2>
+              <p>We’re so happy to have you in our team. You’re a wonderful colleague — kind, caring, reliable, and always a pleasure to work with. You bring warmth, positivity, and the kind of energy that makes people feel supported.</p>
+              <p>And outside of work, we love how much curiosity and adventure you bring with you — from travels and sailing to hikes, stories, and all the little moments in between.</p>
+              <p>We wish you a wonderful year ahead, full of happiness, exciting experiences, great people, meaningful moments, and lots of reasons to smile.</p>
+              <div class="sign">Happy Birthday from all of us! 💛</div>
+              <div class="adventure">May the year ahead be full of great work, great people, and even better adventures. ✈️</div>
+            </div>
+            <button class="restart" id="restart">Replay the adventure</button>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="confetti" id="confetti"></div>
+  </div>
+
+<script>
+  const scenes=[...document.querySelectorAll('.scene')];
+  const dots=document.getElementById('dots');
+  const confetti=document.getElementById('confetti');
+  const colors=['#d96d9b','#7ca9d7','#f0b55d','#7faa89','#b89bd8'];
+  let step=0;
+
+  scenes.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dots.appendChild(d)});
+  const dotEls=[...dots.children];
+
+  function show(n){
+    scenes[step].classList.remove('active');
+    scenes[step].classList.add('exit-left');
+    setTimeout(()=>scenes[step]?.classList.remove('exit-left'),480);
+    step=n;
+    scenes[step].classList.add('active');
+    dotEls.forEach((d,i)=>d.classList.toggle('active',i===step));
+    if(step===4) burst(100);
+  }
+
+  document.querySelectorAll('.next').forEach(btn=>btn.addEventListener('click',()=>show(Math.min(step+1,scenes.length-1))));
+  document.getElementById('restart').addEventListener('click',()=>show(0));
+
+  function burst(count=65){
+    confetti.innerHTML='';
+    for(let i=0;i<count;i++){
+      const p=document.createElement('span'); p.className='piece';
+      p.style.left=Math.random()*100+'vw'; p.style.top=(-30-Math.random()*120)+'px';
+      p.style.background=colors[Math.floor(Math.random()*colors.length)];
+      p.style.setProperty('--x',((Math.random()-.5)*260)+'px');
+      p.style.animationDelay=Math.random()*.45+'s'; p.style.animationDuration=(2.1+Math.random()*1.4)+'s';
+      confetti.appendChild(p);
+    }
+    setTimeout(()=>confetti.innerHTML='',4200);
+  }
+
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('.julia')) return;
+    for(let i=0;i<8;i++){
+      const s=document.createElement('span'); s.className='spark'; s.textContent=['✨','💛','🌸'][Math.floor(Math.random()*3)];
+      s.style.left=e.clientX+'px'; s.style.top=e.clientY+'px'; s.style.setProperty('--x',((Math.random()-.5)*150)+'px'); s.style.setProperty('--y',((Math.random()-.5)*150)+'px');
+      document.body.appendChild(s); setTimeout(()=>s.remove(),900);
+    }
+  });
+</script>
+</body>
+</html>
